@@ -1,0 +1,14 @@
+$border-color: #333;
+
+.x-search-field{
+    display: flex;
+    margin: 16px 0;
+
+    #x-search-field{
+        border-radius: 10px;
+        border: 1px solid $border-color;
+        width: 300px;
+        height: 32px;
+        text-indent: 8px;
+    }
+}

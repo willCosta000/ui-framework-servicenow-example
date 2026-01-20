@@ -1,0 +1,54 @@
+{
+  "components": {
+    "x-1891682-board-app": {
+      "innerComponents": [],
+      "uiBuilder": {
+        "associatedTypes": [
+          "global.core",
+          "global.landing-page"
+        ],
+        "label": "Incident List Component",
+        "tileIcon": "./tile-icon/list.svg",
+        "description": "A description of my component custom",
+        "category": "primitives"
+      },
+      "properties":[
+        {
+          "name": "label",
+          "label": "Label",
+          "fieldType": "string"
+        },
+        {
+          "name": "data",
+          "label": "Data List",
+          "fieldType": "JSON"
+        }
+      ],
+      "actions": [
+        {
+          "name": "delete_record",
+          "label": "Delete a Record",
+          "description": "Delete a Record",
+          "action": "EVENT_DELETE_RECORD",
+          "payload":[]
+        },
+        {
+          "name": "update_record",
+          "label": "Update a Record",
+          "description": "Update a Record",
+          "action": "EVENT_UPDATE_RECORD",
+          "payload":[]
+        },
+        {
+          "name": "search_record",
+          "label": "Search a Record",
+          "description": "Search a Record",
+          "action": "EVENT_SEARCH_RECORD",
+          "payload":[]
+        }
+      ]
+
+    }
+  },
+  "scopeName": "x_1891682_global_0"
+}
