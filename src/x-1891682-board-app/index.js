@@ -25,12 +25,16 @@ const view = (state, dispatch) => {
 	const {label, data} = state.properties;
 
 	const buttons = listButton();
+	const columns = [
+		{ id: 'todo', title: 'To Do' },
+		{ id: 'doing', title: 'Doing' },
+		{ id: 'done', title: 'Done' }
+	];
 	const cards = [
-		{number: '0001', title: 'hello'},
-		{number: '0002', title: 'hello 2'},
-		{number: '0003', title: 'hello 3'},
-		{number: '0004', title: 'hello 4'}
-	]
+		{ id: '1', title: 'Criar Story', column: 'todo' },
+		{ id: '2', title: 'Desenvolver UI', column: 'doing' },
+		{ id: '3', title: 'Testes', column: 'done' }
+	];
 
 	return (
 
@@ -67,15 +71,9 @@ const view = (state, dispatch) => {
 					</tbody>
 			</table>
 
-			
-
-			<div>{buttons}</div>
-
-			<div>{JSON.stringify(cards)}</div>
-
-
+		
 			<div>
-				<drag-list items={cards}></drag-list>
+				<drag-list columns={columns} cards={cards}></drag-list>
 
 			</div>
 			
@@ -110,7 +108,7 @@ createCustomElement('x-1891682-board-app', {
 			dispatch('EVENT_SEARCH_RECORD', {'term': text})
 		}
     },
-	/*eventHandlers:[
+	eventHandlers:[
 		{
 			events: ['keyup'],
 			effect(coeffects){
@@ -125,7 +123,7 @@ createCustomElement('x-1891682-board-app', {
 				}
 			}
 		}
-	],*/
+	],
     styles
 	
 });
