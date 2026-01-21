@@ -2,82 +2,35 @@
 import {createCustomElement} from '@servicenow/ui-core';
 import snabbdom from '@servicenow/ui-renderer-snabbdom';
 import styles from './styles.scss';
+
 import "@servicenow/now-button";
 import "./components/search-field";
 
-//import jQuery from './web-components/tabulator/dataTables/jquery';
-import jQuery from 'jquery';
-
-import DataTable from 'datatables.net-dt';
-
-//import { TabulatorTable } from './web-components/tabulator/Tabulator.js'
+//import "./web-components/drag-and-drop"
+import "./components/drag-list"
 
 const listButton = () =>{
-	return (
+	const buttons = (
 		<div>
-			<now-button label="Click me" variant="primary" size="lg" />
+			<now-button label="Click me" variant="primary" size="lg" append-to-meta={{event: 'EVENT_UPDATE_RECORD', record: "oi"}} />
 			<now-button label="Click me" variant="primary-negative" size="lg" />
 		</div>
 	)
+
+	return buttons
 	
 }
-
-
-const tableTabulator = () => {
-
-	/*const component = document.createElement('tabulator-table');
-    component.setAttribute('title-text', 'Uma Instancia do web component');
-    document.body.appendChild(component);*/
-
-
-	const component = document.createElement('table');
-	component.setAttribute('id', 'example-table-000')
-	document.body.appendChild(component);
-
-	let table = jQuery('#example-table-000').DataTable();
-		table.destroy();
-
-		table = jQuery('#example-table-000').DataTable( {
-		data: [
-			{
-				"name":       "Tiger Nixon",
-				"position":   "System Architect",
-				"salary":     "$3,120",
-				"start_date": "2011/04/25",
-				"office":     "Edinburgh",
-				"extn":       "5421"
-			},
-			{
-				"name":       "Garrett Winters",
-				"position":   "Director",
-				"salary":     "$5,300",
-				"start_date": "2011/07/25",
-				"office":     "Edinburgh",
-				"extn":       "8422"
-			}
-		],
-		columns: [
-			{ data: 'name' },
-			{ data: 'position' },
-			{ data: 'salary' },
-			{ data: 'office' }
-		]
-	} );
-
-	
-
-	
-	
-}
-
-
-//{properties: {label, data, buttons = listButton()}}
 
 const view = (state, dispatch) => {
 	const {label, data} = state.properties;
 
 	const buttons = listButton();
-	const table = tableTabulator();
+	const cards = [
+		{number: '0001', title: 'hello'},
+		{number: '0002', title: 'hello 2'},
+		{number: '0003', title: 'hello 3'},
+		{number: '0004', title: 'hello 4'}
+	]
 
 	return (
 
@@ -118,8 +71,13 @@ const view = (state, dispatch) => {
 
 			<div>{buttons}</div>
 
-			<div>{table}</div>
+			<div>{JSON.stringify(cards)}</div>
 
+
+			<div>
+				<drag-list items={cards}></drag-list>
+
+			</div>
 			
 		
 		</div>
@@ -133,12 +91,13 @@ const view = (state, dispatch) => {
 createCustomElement('x-1891682-board-app', {
 	renderer: { type: snabbdom },
     view,
-    properties: {
+	properties: {
         label: { default: "Hello World" },
         data: { default: [] }
     },
     actionHandlers: {
         'NOW_BUTTON#CLICKED': ({action, dispatch}) => {
+			console.log(action)
 			const event = action.meta.appended.event;
 			const value = action.meta.appended.record;
 
@@ -170,3 +129,7 @@ createCustomElement('x-1891682-board-app', {
     styles
 	
 });
+
+
+
+
