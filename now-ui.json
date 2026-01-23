@@ -40,6 +40,13 @@
           "payload":[]
         },
         {
+          "name": "change_state_record",
+          "label": "Change state a Record",
+          "description": "Change state a Record",
+          "action": "EVENT_CHANGED_STATE_RECORD",
+          "payload":[]
+        },
+        {
           "name": "search_record",
           "label": "Search a Record",
           "description": "Search a Record",

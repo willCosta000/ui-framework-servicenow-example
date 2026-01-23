@@ -6,8 +6,12 @@ import styles from './styles.scss';
 import "@servicenow/now-button";
 import "./components/search-field";
 
-//import "./web-components/drag-and-drop"
-import "./components/drag-list"
+
+import "./components/drag-list";
+
+
+// Web Component
+import "./web-components/examples/button/Button";
 
 const listButton = () =>{
 	const buttons = (
@@ -26,15 +30,17 @@ const view = (state, dispatch) => {
 
 	const buttons = listButton();
 	const columns = [
-		{ id: 'todo', title: 'To Do' },
-		{ id: 'doing', title: 'Doing' },
-		{ id: 'done', title: 'Done' }
+		{ id: '1', title: 'New' },
+		{ id: '2', title: 'In Progress' },
+		{ id: '6', title: 'Resolved' }
 	];
+	
+	/*
 	const cards = [
 		{ id: '1', title: 'Criar Story', column: 'todo' },
 		{ id: '2', title: 'Desenvolver UI', column: 'doing' },
 		{ id: '3', title: 'Testes', column: 'done' }
-	];
+	];*/
 
 	return (
 
@@ -73,8 +79,11 @@ const view = (state, dispatch) => {
 
 		
 			<div>
-				<drag-list columns={columns} cards={cards}></drag-list>
+				<drag-list columns={columns} list={data}></drag-list>
+			</div>
 
+			<div>
+				<button-custom label="hello" variant="primary"></button-custom>
 			</div>
 			
 		
@@ -95,7 +104,6 @@ createCustomElement('x-1891682-board-app', {
     },
     actionHandlers: {
         'NOW_BUTTON#CLICKED': ({action, dispatch}) => {
-			console.log(action)
 			const event = action.meta.appended.event;
 			const value = action.meta.appended.record;
 
@@ -103,12 +111,31 @@ createCustomElement('x-1891682-board-app', {
 				'record': value
 			});
 		},
-		'SEARCH_FIELD#CHANGED': ({action, dispatch}) => {
+		'SEARCH_FIELD#CHANGED': ({state, action, dispatch}) => {
 			const text = action.payload.text
 			dispatch('EVENT_SEARCH_RECORD', {'term': text})
-		}
+			console.log(state)
+		},
+
+		'CARD#CHANGED': ({action, dispatch}) => {
+			console.log('CARD#CHANGED',action)
+			const record_id = action.payload.record_id;
+			const state = action.payload.state;
+			dispatch('EVENT_CHANGED_STATE_RECORD', {
+				'record_id': record_id,
+				'state': state
+			})
+		},
+		
     },
 	eventHandlers:[
+		{
+			events: ['my-event'],
+			effect({action}){
+				console.log(action.payload.event)
+			}
+		},
+		
 		{
 			events: ['keyup'],
 			effect(coeffects){
@@ -123,6 +150,8 @@ createCustomElement('x-1891682-board-app', {
 				}
 			}
 		}
+
+		
 	],
     styles
 	

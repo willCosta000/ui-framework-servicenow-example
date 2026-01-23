@@ -2,6 +2,24 @@ import {createCustomElement, actionTypes} from '@servicenow/ui-core';
 
 import styles from "./styles.scss"
 
+function generateCards(list) {
+    let cards = [];
+
+    if(!list){
+        console.log('nao ha itens')
+        return;
+    }
+
+    list.map(item => {
+        cards.push({
+            id: item._row_data.uniqueValue,
+            title: `${item.number.displayValue} - ${item.short_description.displayValue}`,
+            column: item.state.value
+        })
+    })
+
+    return cards;
+}
 
 createCustomElement('drag-list', {
 	view(state, {dispatch}) {
@@ -48,6 +66,9 @@ createCustomElement('drag-list', {
         },
         cards: {
             default: []
+        },
+        list:{
+            default: []
         }
     },
 
@@ -58,13 +79,35 @@ createCustomElement('drag-list', {
 
 	actionHandlers: {
         [actionTypes.COMPONENT_BOOTSTRAPPED]: ({properties, updateState}) =>{
-            updateState({
-                columns: properties.columns,
-                cards: properties.cards
-            })
+           // setTimeout(() => {
+                console.log('CB', properties)
+                
+                const list = properties.list;
+                const cards = generateCards(list);
+
+                updateState({
+                    columns: properties.columns,
+                    cards: cards
+                })
+            //}, 500);
+            
         },
 
-		'KANBAN_CARD_DROPPED': ({state, action, updateState}) => {
+        [actionTypes.COMPONENT_PROPERTY_CHANGED]: ({properties, updateState}) =>{
+           // setTimeout(() => {
+                console.log('COMPONENT_PROPERTY_CHANGED', properties)
+                const list = properties.list;
+                const cards = generateCards(list);
+
+                updateState({
+                    columns: properties.columns,
+                    cards: cards
+                })
+                
+               
+        },  
+        
+		'KANBAN_CARD_DROPPED': ({state, action, updateState, dispatch}) => {
 			const {cardId, toColumn} = action.payload;
 
 			updateState({
@@ -74,6 +117,11 @@ createCustomElement('drag-list', {
 						: card
 				)
 			});
+
+            dispatch('CARD#CHANGED', {
+                record_id: cardId,
+                state: toColumn
+            })
 		}
 	}
 });
